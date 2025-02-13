@@ -1,7 +1,7 @@
 <a id="readme-top"></a>
 
 <!-- TABLE OF CONTENTS -->
-<details>
+<details open>
   <summary>Table of Contents</summary>
   <ol>
     <li>
@@ -11,6 +11,7 @@
         <li><a href="#why-bullmq">Why BullMQ?</a></li>
         <li><a href="#potential-improvements">Potential Improvements</a></li>
         <li><a href="#how-it-works">How it Works</a></li>
+        <li><a href="#observations">Observations</a></li>
       </ul>
     </li>
     <li>
@@ -120,6 +121,20 @@ Scalability: Multiple workers can process jobs concurrently, making the system h
 
 dADSDSADSADADASDSADASDSDSADASDSADSADSADSAesign graph
 
+### Observations
+1. Logging:
+
+    Currently, the system logs all events and errors to the console for local development purposes. However, this can be easily extended to integrate with advanced monitoring and logging tools like Datadog or New Relic. These tools would provide better insights, centralized logging, and real-time alerts for production environments.
+
+2. File Storage:
+
+    For local development, the system saves files locally to avoid unnecessary costs. However, the project is designed with flexibility in mind. The s3.adapter.ts file contains the implementation for uploading files to AWS S3. To enable S3 integration, you would need to:
+
+      - Update app.module.ts to provide the S3Adapter instead of the LocalStorageAdapter.
+
+      - Add the necessary environment variables for AWS (e.g., AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, and AWS_BUCKET_NAME).
+
+      - This modular approach ensures that the system can be easily adapted to different storage solutions without significant changes to the core logic.
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -159,8 +174,11 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+### Security
+To reach successfully the available endpoints you have to set your send the right api-key into the request headers. The api-key can be found in your .env file.
+
 ### API
-The API is running on localhost:3000. Check the docs section to see all available endpoints
+The API is running on localhost:3000. Check the docs section to see all available endpoints.
 
 ### Database
 You can access the database with these credentials:
@@ -182,7 +200,7 @@ Port: 6380
 ```
 
 ### Docs
-The api documentation is running on `http://localhost:3000/api/docs`
+The API documentation is running on `http://localhost:3000/api/docs`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
