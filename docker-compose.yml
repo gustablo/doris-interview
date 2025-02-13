@@ -1,0 +1,42 @@
+services:
+  postgresdoris:
+    image: postgres
+    container_name: postgresdoris 
+    environment:
+      POSTGRES_USER: user 
+      POSTGRES_PASSWORD: password 
+      POSTGRES_DB: mydb 
+    ports:
+      - "5435:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  redisdoris:
+    image: redis
+    container_name: redisdoris 
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_data:/data
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: doris-api 
+    command: npm run start:dev
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - postgresdoris
+      - redisdoris 
+    volumes:
+      - ./src:/app/src
+      - ./uploads:/app/uploads
+
+volumes:
+  postgres_data:
+  redis_data:
