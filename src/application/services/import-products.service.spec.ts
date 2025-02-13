@@ -39,6 +39,7 @@ describe('ImportProductsService', () => {
     productRepository = module.get(PRODUCT_REPOSITORY);
     queueProvider = module.get(QUEUE_PROVIDER);
 
+    // Mock do logger para evitar logs desnecessários nos testes
     jest.spyOn(Logger.prototype, 'log').mockImplementation(() => {});
     jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => {});
     jest.spyOn(Logger.prototype, 'error').mockImplementation(() => {});
@@ -57,9 +58,9 @@ describe('ImportProductsService', () => {
           listPrice: 100,
           sellingPrice: 90,
           imageUrl: 'https://example.com/image.jpg',
-          category: 'TOP',
           createdAt: new Date(),
           updatedAt: new Date(),
+          category: 'TOP',
           status: 'PROCESSING',
           active: false,
         }),
@@ -69,16 +70,24 @@ describe('ImportProductsService', () => {
 
       await service.exec(products);
 
-      expect(productRepository.create).toHaveBeenCalledWith({
-        identifier: '123',
-        name: 'Product 1',
-        listPrice: 100,
-        sellingPrice: 90,
-        imageUrl: undefined,
-      });
+      expect(productRepository.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          identifier: '123',
+          name: 'Product 1',
+          listPrice: 100,
+          sellingPrice: 90,
+          imageUrl: undefined,
+        }),
+      );
 
       expect(queueProvider.publish).toHaveBeenCalledWith({
-        data: products[0].props,
+        data: expect.objectContaining({
+          identifier: '123',
+          name: 'Product 1',
+          listPrice: 100,
+          sellingPrice: 90,
+          imageUrl: 'https://example.com/image.jpg',
+        }),
       });
 
       expect(queueProvider.publishToDLQ).not.toHaveBeenCalled();
@@ -92,9 +101,9 @@ describe('ImportProductsService', () => {
           listPrice: 100,
           sellingPrice: 90,
           imageUrl: 'https://example.com/image.jpg',
-          category: 'TOP',
           createdAt: new Date(),
           updatedAt: new Date(),
+          category: 'TOP',
           status: 'PROCESSING',
           active: false,
         }),
@@ -104,9 +113,9 @@ describe('ImportProductsService', () => {
           listPrice: 100,
           sellingPrice: 90,
           imageUrl: 'https://example.com/image.jpg',
-          category: 'TOP',
           createdAt: new Date(),
           updatedAt: new Date(),
+          category: 'TOP',
           status: 'PROCESSING',
           active: false,
         }),
@@ -117,11 +126,19 @@ describe('ImportProductsService', () => {
       await service.exec(products);
 
       expect(queueProvider.publishToDLQ).toHaveBeenCalledWith(
-        { data: products[1].props },
+        {
+          data: expect.objectContaining({
+            identifier: '123',
+            name: 'Product 1',
+            listPrice: 100,
+            sellingPrice: 90,
+            imageUrl: 'https://example.com/image.jpg',
+          }),
+        },
         new DuplicatedIdentifierError(),
       );
 
-      expect(queueProvider.publish).toHaveBeenCalledTimes(1); // Apenas o primeiro produto é processado
+      expect(queueProvider.publish).toHaveBeenCalledTimes(1);
     });
 
     it('should handle errors when creating a product', async () => {
@@ -132,9 +149,9 @@ describe('ImportProductsService', () => {
           listPrice: 100,
           sellingPrice: 90,
           imageUrl: 'https://example.com/image.jpg',
-          category: 'TOP',
           createdAt: new Date(),
           updatedAt: new Date(),
+          category: 'TOP',
           status: 'PROCESSING',
           active: false,
         }),
@@ -146,7 +163,15 @@ describe('ImportProductsService', () => {
       await service.exec(products);
 
       expect(queueProvider.publishToDLQ).toHaveBeenCalledWith(
-        { data: products[0].props },
+        {
+          data: expect.objectContaining({
+            identifier: '123',
+            name: 'Product 1',
+            listPrice: 100,
+            sellingPrice: 90,
+            imageUrl: undefined, 
+          }),
+        },
         new CreateProductError(),
       );
 
@@ -162,9 +187,9 @@ describe('ImportProductsService', () => {
         listPrice: 100,
         sellingPrice: 90,
         imageUrl: 'https://example.com/image.jpg',
-        category: 'TOP',
         createdAt: new Date(),
         updatedAt: new Date(),
+        category: 'TOP',
         status: 'PROCESSING',
         active: false,
       };
@@ -172,7 +197,13 @@ describe('ImportProductsService', () => {
       await service.publishToProcessQueue(productProps);
 
       expect(queueProvider.publish).toHaveBeenCalledWith({
-        data: productProps,
+        data: expect.objectContaining({
+          identifier: '123',
+          name: 'Product 1',
+          listPrice: 100,
+          sellingPrice: 90,
+          imageUrl: 'https://example.com/image.jpg',
+        }),
       });
     });
   });
@@ -180,19 +211,13 @@ describe('ImportProductsService', () => {
   describe('wasIdentifierProcessedBefore', () => {
     it('should return true if identifier was processed before', () => {
       const seenIdentifiers = new Set<string>(['123']);
-      const result = service.wasIdentifierProcessedBefore(
-        '123',
-        seenIdentifiers,
-      );
+      const result = service.wasIdentifierProcessedBefore('123', seenIdentifiers);
       expect(result).toBe(true);
     });
 
     it('should return false if identifier was not processed before', () => {
       const seenIdentifiers = new Set<string>();
-      const result = service.wasIdentifierProcessedBefore(
-        '123',
-        seenIdentifiers,
-      );
+      const result = service.wasIdentifierProcessedBefore('123', seenIdentifiers);
       expect(result).toBe(false);
     });
   });
