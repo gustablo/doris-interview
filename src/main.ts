@@ -20,7 +20,7 @@ async function bootstrap() {
       type: 'apiKey',
       name: 'x-api-key',
       in: 'header'
-    })
+    }, 'x-api-key')
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
