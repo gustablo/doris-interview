@@ -36,7 +36,7 @@ export class S3Service implements ImageStorageProvider {
 
     try {
       let s3Response = await this.s3.upload(uploadParams).promise();
-      return `https://${s3Response.bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Response.Key}`;
+      return `https://${s3Response.Bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Response.Key}`;
     } catch (e) {
       this.logger.error({ message: 'Error uploading image to s3', error: e });
       throw new ImageUploadError();
