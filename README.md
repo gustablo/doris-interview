@@ -101,6 +101,8 @@ Scalability: Multiple workers can process jobs concurrently, making the system h
     
     A worker picks up the job from the queue, downloads the product image, compresses it, and uploads it to the designated storage.
 
+    **Obs**: The images are being uploaded inside src/uploads
+
 3. **Status Tracking**:
 
     The system updates the status of each product in real-time:
@@ -200,7 +202,9 @@ Port: 6380
 ```
 
 ### Tests
-run 
+```bash
+npm run test
+``` 
 
 ### Docs
 The API documentation is running on `http://localhost:3000/api/docs`
