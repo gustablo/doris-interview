@@ -1,3 +1,3 @@
 export interface CompressImageProvider {
-    compress(buffer: Buffer, format: string): Promise<Buffer>;
+  compress(buffer: Buffer, format: string): Promise<Buffer>;
 }

@@ -2,7 +2,13 @@ import { Module } from '@nestjs/common';
 import { ImportProductsService } from './application/services/import-products.service';
 import { PrismaProductRepository } from './infra/repositories/prisma/product.repository';
 import { BullMQAdapter } from './adapters/bullmq.adapter';
-import { COMPRESS_IMAGE_PROVIDER, IMAGE_DOWNLOADER_PROVIDER, IMAGE_STORAGE_PROVIDER, PRODUCT_REPOSITORY, QUEUE_PROVIDER } from './constants/tokens';
+import {
+  COMPRESS_IMAGE_PROVIDER,
+  IMAGE_DOWNLOADER_PROVIDER,
+  IMAGE_STORAGE_PROVIDER,
+  PRODUCT_REPOSITORY,
+  QUEUE_PROVIDER,
+} from './constants/tokens';
 import { ProductController } from './infra/controllers/product/product.controller';
 import { PrismaService } from './infra/repositories/database/prisma.config';
 import { BullModule } from '@nestjs/bullmq';
@@ -42,7 +48,7 @@ import { LocalStorageAdapter } from './adapters/local-storage.adapter';
       useClass: BullMQAdapter,
     },
     {
-      provide: IMAGE_DOWNLOADER_PROVIDER, 
+      provide: IMAGE_DOWNLOADER_PROVIDER,
       useClass: AxiosImageDownloaderAdapter,
     },
     {

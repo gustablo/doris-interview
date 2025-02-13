@@ -1,7 +1,7 @@
-import { BaseError } from "./base.error";
+import { BaseError } from './base.error';
 
 export class CreateProductError extends BaseError {
-    constructor() {
-        super('Error saving product');
-    }
+  constructor() {
+    super('Error saving product');
+  }
 }

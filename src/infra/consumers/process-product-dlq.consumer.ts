@@ -8,29 +8,35 @@ import { IProductRepository } from 'src/domain/repositories/product.repository';
 
 @Processor(PRODUCT_PROCESSOR_DLQ_QUEUE_NAME)
 export class ProcessProductDLQConsumer extends WorkerHost {
-    private readonly logger = new Logger(ProcessProductDLQConsumer.name);
+  private readonly logger = new Logger(ProcessProductDLQConsumer.name);
 
-    constructor(
-        @Inject(PRODUCT_REPOSITORY) private productRepository: IProductRepository,
-    ) {
-        super();
+  constructor(
+    @Inject(PRODUCT_REPOSITORY) private productRepository: IProductRepository,
+  ) {
+    super();
+  }
+
+  async process(
+    job: Job<ProductProps & { reason: string }, any, string>,
+  ): Promise<any> {
+    this.logger.log({
+      message: 'Processing DLQ job',
+      job: job.id,
+      data: job.data,
+    });
+
+    try {
+      const updated = await this.productRepository.update(job.data.identifier, {
+        ...job.data,
+        status: 'PROCESSED_ERROR',
+        errorMessage: job.data.reason,
+      });
+
+      this.logger.log({ message: 'Product updated on DLQ', product: updated });
+      return job.data;
+    } catch (error) {
+      this.logger.error({ message: 'Error processing DLQ job', error });
+      return 'failed';
     }
-
-    async process(job: Job<ProductProps & { reason: string }, any, string>): Promise<any> {
-        this.logger.log({ message: 'Processing DLQ job', job: job.id, data: job.data });
-
-        try {
-            const updated = await this.productRepository.update(job.data.identifier, {
-                ...job.data,
-                status: 'PROCESSED_ERROR',
-                errorMessage: job.data.reason,
-            })
-    
-            this.logger.log({ message: 'Product updated on DLQ', product: updated });
-            return job.data;
-        } catch(error) {
-            this.logger.error({ message: 'Error processing DLQ job', error });
-            return 'failed';
-        }
-    }
+  }
 }

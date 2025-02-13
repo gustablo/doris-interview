@@ -6,14 +6,16 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: new ConsoleLogger({
-      prefix: 'Doris'
-    })
+      prefix: 'Doris',
+    }),
   });
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
     .setTitle('Doris API')
-    .setDescription('API Created to import batch of products and process their images')
+    .setDescription(
+      'API Created to import batch of products and process their images',
+    )
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

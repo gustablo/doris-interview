@@ -7,22 +7,22 @@ import { Product, ProductProps } from 'src/domain/entities/product.entity';
 
 @Processor(PRODUCT_PROCESSOR_QUEUE_NAME)
 export class ProcessProductConsumer extends WorkerHost {
-    private readonly logger = new Logger(ProcessProductConsumer.name);
+  private readonly logger = new Logger(ProcessProductConsumer.name);
 
-    constructor(private processProductService: ProcessProductService) {
-        super();
+  constructor(private processProductService: ProcessProductService) {
+    super();
+  }
+
+  async process(job: Job<ProductProps, any, string>): Promise<any> {
+    this.logger.log({ message: 'Processing job', job: job.id });
+
+    try {
+      await this.processProductService.exec(new Product(job.data));
+      this.logger.log({ message: 'Product processed', product: job.data });
+      return 'processed';
+    } catch (error) {
+      this.logger.log({ message: 'Error processing product', error });
+      return 'failed';
     }
-
-    async process(job: Job<ProductProps, any, string>): Promise<any> {
-        this.logger.log({ message: 'Processing job', job: job.id });
-
-        try {
-            await this.processProductService.exec(new Product(job.data));
-            this.logger.log({ message: 'Product processed', product: job.data });
-            return 'processed';
-        } catch (error) {
-            this.logger.log({ message: 'Error processing product', error });
-            return 'failed';
-        }
-    }
+  }
 }
