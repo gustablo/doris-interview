@@ -158,9 +158,9 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    git clone https://github.com/gustablo/doris-interview.git
    ```
-2. Create a .env file 
+2. Create a .env file in the root directory then run
    ```sh
-   echo -e 'NODE_ENV=development\nDATABASE_URL="postgres://user:password@postgresdoris:5432/mydb?connect_timeout=300"\nREDIS_HOST=redisdoris\nREDIS_PORT=6379\nAPI_KEY=secretdoris' > .env
+   cp .env.example .env
    ```
 3. Run docker containers 
    ```sh
