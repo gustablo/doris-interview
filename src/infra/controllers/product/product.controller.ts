@@ -12,8 +12,10 @@ import {
   ImportProductDTO,
 } from '../dtos/import-product.dto';
 import { ApiKeyGuard } from '../../../infra/middleware/auth.guard';
+import { ApiSecurity } from '@nestjs/swagger';
 
 @Controller('products')
+@ApiSecurity('x-api-key')
 @UseGuards(ApiKeyGuard)
 export class ProductController {
   constructor(private importProductsService: ImportProductsService) {}

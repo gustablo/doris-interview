@@ -16,9 +16,10 @@ async function bootstrap() {
     .setDescription(
       'API Created to import batch of products and process their images',
     ) 
-    .addBasicAuth({
+    .addApiKey({
       type: 'apiKey',
       name: 'x-api-key',
+      in: 'header',
     })
     .setVersion('1.0')
     .build();
