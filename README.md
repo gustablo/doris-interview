@@ -119,7 +119,7 @@ Scalability: Multiple workers can process jobs concurrently, making the system h
 
     The system provides endpoints or logs to monitor the status of jobs, making it easy to track progress and identify issues.
 
-dADSDSADSADADASDSADASDSDSADASDSADSADSADSAesign graph
+![Flow](./flow.jpeg "Flow")
 
 ### Observations
 1. Logging:
@@ -168,7 +168,6 @@ This is an example of how to list things you need to use the software and how to
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- USAGE EXAMPLES -->
