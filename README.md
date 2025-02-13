@@ -91,6 +91,9 @@ Scalability: Multiple workers can process jobs concurrently, making the system h
 
     Build a dashboard to visualize job statuses, queue metrics, and system health.
 
+6. Tests:
+    If I had more time I would develop more automated tests, such as unit, integration and e2e tests 
+
 ### How it Works
 1. **Product Import**:
   
