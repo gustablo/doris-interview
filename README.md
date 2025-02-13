@@ -8,6 +8,9 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#why-bullmq">Why BullMQ?</a></li>
+        <li><a href="#potential-improvements">Potential Improvements</a></li>
+        <li><a href="#how-it-works">How it Works</a></li>
       </ul>
     </li>
     <li>
@@ -17,12 +20,16 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
+    <li>
+      <a href="#usage">Usage</a>
+      <ul>
+        <li><a href="#api">API</a></li>
+        <li><a href="#database">Database</a></li>
+        <li><a href="#redis">Redis</a></li>
+        <li><a href="#docs">API Docs</a></li>
+      </ul>
+    </li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
