@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsArray, IsIn, IsNotEmpty, IsNumber, IsString, IsUrl, MaxLength, Min, ValidateNested } from "class-validator";
+import { IsPngOrJpg } from "src/decorators/is-image-url";
 import { Product } from "src/domain/entities/product.entity";
 
 export class ImportProductDTO {
@@ -27,6 +28,7 @@ export class ImportProductDTO {
     })
     @IsNotEmpty()
     @IsUrl()
+    @IsPngOrJpg()
     @MaxLength(255)
     image_url: string;
 
