@@ -16,6 +16,10 @@ async function bootstrap() {
     .setDescription(
       'API Created to import batch of products and process their images',
     )
+    .addApiKey({
+      type: 'apiKey',
+      name: 'x-api-key',
+    })
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

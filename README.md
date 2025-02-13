@@ -165,6 +165,7 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    docker exec -it doris-api npx prisma migrate dev
    ```
+   **If you face the error `cannot reach to database postgresdoris:5432` please stop all others containers you have set up and retry**
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -197,6 +198,9 @@ Password:
 Host: 127.0.0.1
 Port: 6380 
 ```
+
+### Tests
+run 
 
 ### Docs
 The API documentation is running on `http://localhost:3000/api/docs`

@@ -20,10 +20,10 @@ export class ProductController {
 
   @Post('imports')
   @HttpCode(200)
-  async importProducts(@Body() products: ImportProductCollectionDTO) {
+  async importProducts(@Body() data: ImportProductCollectionDTO) {
     try {
       await this.importProductsService.exec(
-        ImportProductDTO.toDomainCollection(products.products),
+        ImportProductDTO.toDomainCollection(data.products),
       );
       return { message: 'Products are being imported in background' };
     } catch (error) {

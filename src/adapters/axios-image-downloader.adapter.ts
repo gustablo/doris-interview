@@ -17,11 +17,14 @@ export class AxiosImageDownloaderAdapter implements ImageDownloadProvider {
       const buffer = Buffer.from(response.data);
 
       let fileType = 'unknown';
-      if (buffer.toString('hex', 0, 8) === '89504e470d0a1a0a') {
+      const isPng = buffer.toString('hex', 0, 8) === '89504e470d0a1a0a';
+      
+      if (isPng) {
         fileType = 'png';
       }
-
-      if (buffer.toString('hex', 0, 2) === 'ffd8') {
+      
+      const isJpg = buffer.toString('hex', 0, 2) === 'ffd8';
+      if (isJpg) {
         fileType = 'jpg';
       }
 
