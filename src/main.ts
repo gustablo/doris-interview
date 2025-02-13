@@ -15,12 +15,11 @@ async function bootstrap() {
     .setTitle('Doris API')
     .setDescription(
       'API Created to import batch of products and process their images',
-    )
-    .addApiKey({
+    ) 
+    .addBasicAuth({
       type: 'apiKey',
       name: 'x-api-key',
-      in: 'header'
-    }, 'x-api-key')
+    })
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
