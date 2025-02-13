@@ -1,152 +1,187 @@
-acesso ao banco
-acesso ao redis
-pasta de uploads
-como rodar
-docker compose up
-como mandar request (swagger)
+<a id="readme-top"></a>
 
-desenho da arquitetura
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-testes unitarios
 
-implementacao do s3
 
-# API - Products Import System with NestJS
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-This API is built using **NestJS** and serves to manage product uploads, access and insert data from the database, and interact with BullMQ. Below is the documentation on how to run the application, configure the database and Redis, as well as how to run migrations with Prisma and unit tests.
+![Doris Logo](https://media.licdn.com/dms/image/v2/D4D0BAQHhMB4qB_ZUTg/company-logo_200_200/company-logo_200_200/0/1727280983591/doris_ai_logo?e=2147483647&v=beta&t=DaCRBb7IK9xv6owDNy05-qNzxSsNWm10Ptp7eIbTf_A)
 
-## Technologies Used
+This project is a technical interview test built with NestJS, designed to simulate a real-world scenario of importing a batch of products, processing their images, and managing the workflow efficiently. The goal is to demonstrate proficiency in backend development, asynchronous task processing, and error handling.
 
-- **NestJS** - Node.js framework for building APIs.
-- **Prisma** - ORM for database access.
-- **BullMQ/Redis** - Caching storage for fast data retrieval.
-- **Swagger** - Interactive API documentation.
-- **Docker** - Containers to facilitate the development environment.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## API Structure
 
-The API has the following main resources:
-- **Access to the Database (PostgreSQL)**.
-- **Access to Redis**.
-- **File storage (uploads folder)**.
+### Built With
+- NestJS: A progressive Node.js framework for building efficient and scalable server-side applications.
 
----
+- BullMQ: A Redis-based queue system for handling background jobs and task processing.
 
-## Requirements
+- Redis: Used as the backend for BullMQ to manage job queues and ensure reliable task execution.
 
-- **Docker**: To run the application in containers.
-- **Node.js**: To run the application locally, in case you don’t use Docker.
-- **Prisma**: For migration and database manipulation.
+- Image Processing Libraries: Tools like sharp or imagemagick for compressing and resizing images.
 
----
+- File Storage: Integration with cloud storage services (e.g., AWS S3) or local file systems for storing compressed images.
 
-## How to Run the API
+- PostgreSQL: A relational database for storing product data and processing status.
 
-### 1. Configuration with Docker
+- Docker: Containerization for easy deployment and development environment setup.
 
-The API can be easily run using Docker and Docker Compose. Ensure Docker is installed on your system.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-#### Steps:
+### Why BullMQ?
+Performance: BullMQ leverages Redis to handle large volumes of jobs efficiently.
 
-**Clone the repository:**
+Reliability: Failed jobs are automatically retried and moved to a DLQ if necessary.
 
-  ```bash
-  git clone <repository_url>
-  cd <repository_name>
-  ```
+Scalability: Multiple workers can process jobs concurrently, making the system highly scalable.
 
-Start the containers using Docker Compose:
-  ```bash
-  docker-compose up --build
-  ```
-This will start the containers for PostgreSQL, Redis, and the NestJS API.
+### Potential Improvements
+1. Real-Time Notifications:
 
-The application will be available at http://localhost:3000.
+    Integrate with a notification service (e.g., email, Slack) to alert users about job status changes.
 
-Accessing the Database
-The application uses PostgreSQL as the database.
+2. Distributed Processing:
 
-The database is configured in the docker-compose.yml file.
-To access the database, you can use any PostgreSQL client and connect to port 5435.
-Prisma Configuration
-Prisma is used as the ORM to access the database. Ensure the database is running before trying to run the migration.
+    Scale the system horizontally by adding more workers and Redis instances.
 
-To run the migrations, use:
-  ```bash
-  docker exec -it doris-api npx prisma migrate dev
-  ```
-The database URL in the .env file:
+3. Advanced Image Processing:
 
-env
-DATABASE_URL="postgresql://user:password@postgresdoris:5432/mydb?schema=public"
-Accessing Redis
-The application uses Redis to store temporary data in the cache.
+    Add support for additional image transformations, such as resizing, cropping, or watermarking.
 
-Redis is configured in the docker-compose.yml file, and the application automatically connects to it.
-Redis can be accessed at port 6380.
-Uploads Folder
-Files uploaded to the API are stored in the uploads folder. This folder is created automatically when the application starts.
+4.  Cloud Integration:
 
-Configuration:
-The uploads folder is mapped in the container and can be accessed locally to check the uploaded files.
+    Enhance the system to upload images directly to cloud storage services like AWS S3 or Google Cloud Storage.
 
-If you're using Docker, the uploads folder will be mapped correctly between the host and the container as configured in docker-compose.yml.
+5. Dashboard:
 
-How to Use the API (Swagger)
-The API comes with interactive documentation via Swagger, which can be accessed at:
+    Build a dashboard to visualize job statuses, queue metrics, and system health.
 
-URL: http://localhost:3000/api-docs
-Swagger allows you to make requests directly through the web interface, simplifying integration.
+### How it Works
+1. **Product Import**:
+  
+    A batch of products is imported via an API endpoint.
+    Each product is validated and added to a BullMQ queue for processing.
 
-Unit Tests
-To run unit tests, follow these steps:
+2. **Image Compression**:
+    
+    A worker picks up the job from the queue, downloads the product image, compresses it, and uploads it to the designated storage.
 
-Run the tests with Jest:
+3. **Status Tracking**:
 
-To run the unit tests, execute the command:
+    The system updates the status of each product in real-time:
 
-bash
-npm run test
-Run the tests continuously while developing:
+4. **Processing: When the job is picked up by a worker**.
 
-To automatically run the tests while making changes:
+    - PROCESSED: When the image is compressed and uploaded successfully.
+    - PROCESSING: When the image is being processed.
+    - PROCESS_ERROR: If an error occurs during processing.
 
-bash
-npm run test:watch
-Test Coverage:
+5. **Dead Letter Queue (DLQ)**:
 
-To generate a test coverage report:
+    Jobs that fail after multiple retries are moved to a DLQ for manual inspection and resolution.
 
-bash
-npm run test:cov
-Final Considerations
-The API is ready to be used with Docker or locally, and the Swagger documentation makes interacting with the endpoints easier.
-Ensure all dependencies are installed correctly, and Docker is properly set up to run the application in the container.
-If you encounter any issues, consult the logs or reach out to the development team.
+6. **Monitoring**:
 
-markdown
+    The system provides endpoints or logs to monitor the status of jobs, making it easy to track progress and identify issues.
 
----
+dADSDSADSADADASDSADASDSDSADASDSADSADSADSAesign graph
 
-### Explanation of the Main Sections:
 
-1. **How to Run the API**:
-   - Use Docker (containers for PostgreSQL, Redis, and the API).
-   - Run locally without Docker.
-   
-2. **Access to the Database**:
-   - PostgreSQL setup with Prisma and how to run migrations.
+<!-- GETTING STARTED -->
+## Getting Started
 
-3. **Access to Redis**:
-   - Redis setup and connection by the API.
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
 
-4. **Uploads Folder**:
-   - How the uploads folder is created and managed.
+### Prerequisites
 
-5. **Swagger**:
-   - How to access the interactive API documentation.
+This is an example of how to list things you need to use the software and how to install them.
+- Docker v27
 
-6. **Unit Tests**:
-   - How to run and configure unit tests using Jest.
+### Installation
 
-This README provides a comprehensive overview of setting up, using, and testing the API in both Docker and local environments.
+1. Clone the repo
+   ```sh
+   git clone https://github.com/gustablo/doris-interview.git
+   ```
+2. Create a .env file 
+   ```sh
+   echo -e 'NODE_ENV=development\nDATABASE_URL="postgres://user:password@postgresdoris:5432/mydb?connect_timeout=300"\nREDIS_HOST=redisdoris\nREDIS_PORT=6379\nAPI_KEY=secretdoris' > .env
+   ```
+3. Run docker containers 
+   ```sh
+   docker compose up --build
+   ```
+4. Run the prisma migrations inside the container
+   ```sh
+   docker exec -it doris-api npx prisma migrate dev
+   ```
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+### API
+The API is running on localhost:3000. Check the docs section to see all available endpoints
+
+### Database
+You can access the database with these credentials:
+```
+Username: user
+Password: password
+Host:localhost
+Port: 5435
+Database: mydb
+```
+
+### Redis
+You can access the redis with these credentials:
+```
+Username: default 
+Password: 
+Host: 127.0.0.1
+Port: 6380 
+```
+
+### Docs
+The api documentation is running on `http://localhost:3000/api/docs`
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- CONTACT -->
+## Contact
+
+Gustavo Pinheiro - [@gustablo](https://linkedin.com/in/gustablo) - gpinheiro2001@gmail.com 
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
