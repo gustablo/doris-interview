@@ -1,8 +1,8 @@
-import { Product, ProductProps } from 'src/domain/entities/product.entity';
-import { IProductRepository } from 'src/domain/repositories/product.repository';
+import { Product, ProductProps } from '../../../domain/entities/product.entity';
+import { IProductRepository } from '../../../domain/repositories/product.repository';
 import { ProductMapper } from '../mappers/product.mapper';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/infra/repositories/database/prisma.config';
+import { PrismaService } from '../../../infra/repositories/database/prisma.config';
 
 @Injectable()
 export class PrismaProductRepository implements IProductRepository {

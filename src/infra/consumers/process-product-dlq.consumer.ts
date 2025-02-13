@@ -1,10 +1,10 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Inject, Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
-import { PRODUCT_PROCESSOR_DLQ_QUEUE_NAME } from 'src/constants/queue';
-import { PRODUCT_REPOSITORY } from 'src/constants/tokens';
-import { ProductProps } from 'src/domain/entities/product.entity';
-import { IProductRepository } from 'src/domain/repositories/product.repository';
+import { PRODUCT_PROCESSOR_DLQ_QUEUE_NAME } from '../../constants/queue';
+import { PRODUCT_REPOSITORY } from '../../constants/tokens';
+import { ProductProps } from '../../domain/entities/product.entity';
+import { IProductRepository } from '../../domain/repositories/product.repository';
 
 @Processor(PRODUCT_PROCESSOR_DLQ_QUEUE_NAME)
 export class ProcessProductDLQConsumer extends WorkerHost {

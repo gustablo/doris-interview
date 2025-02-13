@@ -6,12 +6,12 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ImportProductsService } from 'src/application/services/import-products.service';
+import { ImportProductsService } from '../../../application/services/import-products.service';
 import {
   ImportProductCollectionDTO,
   ImportProductDTO,
 } from '../dtos/import-product.dto';
-import { ApiKeyGuard } from 'src/infra/middleware/auth.guard';
+import { ApiKeyGuard } from '../../../infra/middleware/auth.guard';
 
 @Controller('products')
 @UseGuards(ApiKeyGuard)

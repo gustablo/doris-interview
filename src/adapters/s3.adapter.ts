@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import AWS from 'aws-sdk';
 import { randomUUID } from 'crypto';
-import { ImageStorageProvider } from 'src/domain/providers/image-storage.provider';
+import { ImageStorageProvider } from '../domain/providers/image-storage.provider';
 import { LocalStorageAdapter } from './local-storage.adapter';
-import { ImageUploadError } from 'src/domain/errors/image-upload.error';
+import { ImageUploadError } from '../domain/errors/image-upload.error';
 
 @Injectable()
 export class S3Service implements ImageStorageProvider {

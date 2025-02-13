@@ -1,10 +1,10 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { PRODUCT_REPOSITORY, QUEUE_PROVIDER } from 'src/constants/tokens';
-import { Product, ProductProps } from 'src/domain/entities/product.entity';
-import { CreateProductError } from 'src/domain/errors/create-product.error';
-import { DuplicatedIdentifierError } from 'src/domain/errors/duplicated-identifier.error';
-import { QueueProvider } from 'src/domain/providers/queue.provider';
-import { IProductRepository } from 'src/domain/repositories/product.repository';
+import { PRODUCT_REPOSITORY, QUEUE_PROVIDER } from '../../constants/tokens';
+import { Product, ProductProps } from '../../domain/entities/product.entity';
+import { CreateProductError } from '../../domain/errors/create-product.error';
+import { DuplicatedIdentifierError } from '../../domain/errors/duplicated-identifier.error';
+import { QueueProvider } from '../../domain/providers/queue.provider';
+import { IProductRepository } from '../../domain/repositories/product.repository';
 
 @Injectable()
 export class ImportProductsService {
@@ -49,9 +49,7 @@ export class ImportProductsService {
     }
   }
 
-  private async createProduct(
-    product: ProductProps,
-  ): Promise<Product | undefined> {
+  async createProduct(product: ProductProps): Promise<Product | undefined> {
     try {
       const created = await this.productRepository.create(product);
       this.logger.log({ message: 'Product created', product: created?.props });
@@ -65,7 +63,7 @@ export class ImportProductsService {
     }
   }
 
-  private async publishToProcessQueue(product: ProductProps) {
+  async publishToProcessQueue(product: ProductProps) {
     await this.queueProvider.publish({
       data: product,
     });
@@ -76,7 +74,7 @@ export class ImportProductsService {
     });
   }
 
-  private wasIdentifierProcessedBefore(
+  wasIdentifierProcessedBefore(
     identifier: string,
     seenIdentifiers: Set<string>,
   ) {

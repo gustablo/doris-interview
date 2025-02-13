@@ -1,9 +1,9 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Logger } from '@nestjs/common';
 import { Job } from 'bullmq';
-import { ProcessProductService } from 'src/application/services/process-product.service';
-import { PRODUCT_PROCESSOR_QUEUE_NAME } from 'src/constants/queue';
-import { Product, ProductProps } from 'src/domain/entities/product.entity';
+import { ProcessProductService } from '../../application/services/process-product.service';
+import { PRODUCT_PROCESSOR_QUEUE_NAME } from '../../constants/queue';
+import { Product, ProductProps } from '../../domain/entities/product.entity';
 
 @Processor(PRODUCT_PROCESSOR_QUEUE_NAME)
 export class ProcessProductConsumer extends WorkerHost {

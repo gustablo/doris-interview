@@ -11,8 +11,8 @@ import {
   Min,
   ValidateNested,
 } from 'class-validator';
-import { IsPngOrJpg } from 'src/decorators/is-image-url';
-import { Product } from 'src/domain/entities/product.entity';
+import { IsPngOrJpg } from '../../../decorators/is-image-url';
+import { Product } from '../../../domain/entities/product.entity';
 
 export class ImportProductDTO {
   @ApiProperty({

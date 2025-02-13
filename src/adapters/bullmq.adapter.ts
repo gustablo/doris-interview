@@ -4,12 +4,12 @@ import { Queue } from 'bullmq';
 import {
   PRODUCT_PROCESSOR_DLQ_QUEUE_NAME,
   PRODUCT_PROCESSOR_QUEUE_NAME,
-} from 'src/constants/queue';
-import { BaseError } from 'src/domain/errors/base.error';
+} from '../constants/queue';
+import { BaseError } from '../domain/errors/base.error';
 import {
   PublishProps,
   QueueProvider,
-} from 'src/domain/providers/queue.provider';
+} from '../domain/providers/queue.provider';
 
 @Injectable()
 export class BullMQAdapter implements QueueProvider {

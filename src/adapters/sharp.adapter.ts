@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import sharp from 'sharp';
-import { CompressImageError } from 'src/domain/errors/compress-image.error';
-import { CompressImageProvider } from 'src/domain/providers/compress-image.provider';
+import { CompressImageError } from '../domain/errors/compress-image.error';
+import { CompressImageProvider } from '../domain/providers/compress-image.provider';
 
 @Injectable()
 export class SharpAdapter implements CompressImageProvider {

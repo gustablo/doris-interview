@@ -2,9 +2,9 @@ import { Injectable, Logger } from '@nestjs/common';
 import {
   DownloadOutput,
   ImageDownloadProvider,
-} from 'src/domain/providers/image-download.provider';
+} from '../domain/providers/image-download.provider';
 import axios from 'axios';
-import { ImageDownloadError } from 'src/domain/errors/image-download.error';
+import { ImageDownloadError } from '../domain/errors/image-download.error';
 
 @Injectable()
 export class AxiosImageDownloaderAdapter implements ImageDownloadProvider {

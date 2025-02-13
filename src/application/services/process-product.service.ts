@@ -5,17 +5,17 @@ import {
   IMAGE_STORAGE_PROVIDER,
   PRODUCT_REPOSITORY,
   QUEUE_PROVIDER,
-} from 'src/constants/tokens';
-import { Product } from 'src/domain/entities/product.entity';
-import { CompressImageError } from 'src/domain/errors/compress-image.error';
-import { ImageDownloadError } from 'src/domain/errors/image-download.error';
-import { ImageUploadError } from 'src/domain/errors/image-upload.error';
-import { UnknownError } from 'src/domain/errors/unknown.error';
-import { CompressImageProvider } from 'src/domain/providers/compress-image.provider';
-import { ImageDownloadProvider } from 'src/domain/providers/image-download.provider';
-import { ImageStorageProvider } from 'src/domain/providers/image-storage.provider';
-import { QueueProvider } from 'src/domain/providers/queue.provider';
-import { IProductRepository } from 'src/domain/repositories/product.repository';
+} from '../../constants/tokens';
+import { Product } from '../../domain/entities/product.entity';
+import { CompressImageError } from '../../domain/errors/compress-image.error';
+import { ImageDownloadError } from '../../domain/errors/image-download.error';
+import { ImageUploadError } from '../../domain/errors/image-upload.error';
+import { UnknownError } from '../../domain/errors/unknown.error';
+import { CompressImageProvider } from '../../domain/providers/compress-image.provider';
+import { ImageDownloadProvider } from '../../domain/providers/image-download.provider';
+import { ImageStorageProvider } from '../../domain/providers/image-storage.provider';
+import { QueueProvider } from '../../domain/providers/queue.provider';
+import { IProductRepository } from '../../domain/repositories/product.repository';
 
 @Injectable()
 export class ProcessProductService {

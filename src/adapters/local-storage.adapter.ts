@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ImageStorageProvider } from 'src/domain/providers/image-storage.provider';
+import { ImageStorageProvider } from '../domain/providers/image-storage.provider';
 import fs from 'fs';
 import path from 'path';
-import { ImageUploadError } from 'src/domain/errors/image-upload.error';
+import { ImageUploadError } from '../domain/errors/image-upload.error';
 
 @Injectable()
 export class LocalStorageAdapter implements ImageStorageProvider {
