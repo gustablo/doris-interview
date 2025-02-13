@@ -19,6 +19,7 @@ async function bootstrap() {
     .addApiKey({
       type: 'apiKey',
       name: 'x-api-key',
+      in: 'header'
     })
     .setVersion('1.0')
     .build();
