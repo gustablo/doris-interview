@@ -93,7 +93,7 @@ describe('ProcessProductService', () => {
         createdAt: new Date(),
         updatedAt: new Date(),
         status: 'PROCESSING',
-    });
+      });
 
       const downloadedImage = {
         buffer: Buffer.from('image-data'),

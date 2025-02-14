@@ -17,7 +17,11 @@ export class ProcessProductDLQConsumer extends WorkerHost {
   }
 
   async process(
-    job: Job<ProductProps & { reason: string, shouldSave: boolean }, any, string>,
+    job: Job<
+      ProductProps & { reason: string; shouldSave: boolean },
+      any,
+      string
+    >,
   ): Promise<any> {
     this.logger.log({
       message: 'Processing DLQ job',
@@ -26,7 +30,10 @@ export class ProcessProductDLQConsumer extends WorkerHost {
     });
 
     if (!job.data.shouldSave) {
-      this.logger.log({ message: 'Product skipped from processing', product: job.data })
+      this.logger.log({
+        message: 'Product skipped from processing',
+        product: job.data,
+      });
       return;
     }
 

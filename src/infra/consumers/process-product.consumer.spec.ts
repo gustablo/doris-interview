@@ -31,7 +31,9 @@ describe('ProcessProductConsumer', () => {
     }).compile();
 
     consumer = module.get<ProcessProductConsumer>(ProcessProductConsumer);
-    processProductService = module.get<ProcessProductService>(ProcessProductService);
+    processProductService = module.get<ProcessProductService>(
+      ProcessProductService,
+    );
     logger = module.get<Logger>(Logger);
   });
 
@@ -44,16 +46,16 @@ describe('ProcessProductConsumer', () => {
       const job = {
         id: '1',
         data: {
-            identifier: '123',
-            name: 'Product 1',
-            listPrice: 100,
-            sellingPrice: 90,
-            imageUrl: 'https://example.com/image.jpg',
-            active: false,
-            category: 'TOP',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            status: 'PROCESSING',
+          identifier: '123',
+          name: 'Product 1',
+          listPrice: 100,
+          sellingPrice: 90,
+          imageUrl: 'https://example.com/image.jpg',
+          active: false,
+          category: 'TOP',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          status: 'PROCESSING',
         },
       } as Job<ProductProps, any, string>;
 
@@ -61,7 +63,9 @@ describe('ProcessProductConsumer', () => {
 
       const result = await consumer.process(job);
 
-      expect(processProductService.exec).toHaveBeenCalledWith(new Product(job.data));
+      expect(processProductService.exec).toHaveBeenCalledWith(
+        new Product(job.data),
+      );
       expect(result).toBe('processed');
     });
 
@@ -69,16 +73,16 @@ describe('ProcessProductConsumer', () => {
       const job = {
         id: '1',
         data: {
-            identifier: '123',
-            name: 'Product 1',
-            listPrice: 100,
-            sellingPrice: 90,
-            imageUrl: 'https://example.com/image.jpg',
-            active: false,
-            category: 'TOP',
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            status: 'PROCESSING',
+          identifier: '123',
+          name: 'Product 1',
+          listPrice: 100,
+          sellingPrice: 90,
+          imageUrl: 'https://example.com/image.jpg',
+          active: false,
+          category: 'TOP',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          status: 'PROCESSING',
         },
       } as Job<ProductProps, any, string>;
 
@@ -87,7 +91,9 @@ describe('ProcessProductConsumer', () => {
 
       const result = await consumer.process(job);
 
-      expect(processProductService.exec).toHaveBeenCalledWith(new Product(job.data));
+      expect(processProductService.exec).toHaveBeenCalledWith(
+        new Product(job.data),
+      );
       expect(result).toBe('failed');
     });
   });

@@ -2,7 +2,6 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PRODUCT_REPOSITORY, QUEUE_PROVIDER } from '../../constants/tokens';
 import { Product, ProductProps } from '../../domain/entities/product.entity';
 import { CreateProductError } from '../../domain/errors/create-product.error';
-import { DuplicatedIdentifierError } from '../../domain/errors/duplicated-identifier.error';
 import { QueueProvider } from '../../domain/providers/queue.provider';
 import { IProductRepository } from '../../domain/repositories/product.repository';
 
@@ -21,23 +20,29 @@ export class ImportProductsService {
     this.logger.log('Importing products process started');
 
     const seenIDentifiers = new Set<string>();
+    const allIdentifiersFromRequest = new Set(
+      products.map((product) => product.props.identifier),
+    );
+
+    const existingProducts = await this.productRepository.findMany(
+      Array.from(allIdentifiersFromRequest),
+    );
+    const existingIdentifiers = new Set(
+      existingProducts.map((product) => product.props.identifier),
+    );
 
     for (const product of products) {
       if (
         this.wasIdentifierProcessedBefore(
           product.props.identifier,
           seenIDentifiers,
-        )
+        ) ||
+        existingIdentifiers.has(product.props.identifier)
       ) {
         this.logger.warn({
           message: 'Product identified as duplicated: identifier',
           identifier: product.props.identifier,
         });
-        await this.queueProvider.publishToDLQ(
-          { data: product.props },
-          new DuplicatedIdentifierError(),
-          false
-        );
       } else {
         const created = await this.createProduct({
           ...product.props,
@@ -60,7 +65,6 @@ export class ImportProductsService {
       await this.queueProvider.publishToDLQ(
         { data: product },
         new CreateProductError(),
-        error.code !== 'P2002' // verifying if product is duplicate by identifier, if so, dont save it. Not proud of it tbh, i would change it if i had more time
       );
       this.logger.error({ message: 'Error creating product', product, error });
     }

@@ -169,7 +169,7 @@ describe('ImportProductsService', () => {
             name: 'Product 1',
             listPrice: 100,
             sellingPrice: 90,
-            imageUrl: undefined, 
+            imageUrl: undefined,
           }),
         },
         new CreateProductError(),
@@ -211,13 +211,19 @@ describe('ImportProductsService', () => {
   describe('wasIdentifierProcessedBefore', () => {
     it('should return true if identifier was processed before', () => {
       const seenIdentifiers = new Set<string>(['123']);
-      const result = service.wasIdentifierProcessedBefore('123', seenIdentifiers);
+      const result = service.wasIdentifierProcessedBefore(
+        '123',
+        seenIdentifiers,
+      );
       expect(result).toBe(true);
     });
 
     it('should return false if identifier was not processed before', () => {
       const seenIdentifiers = new Set<string>();
-      const result = service.wasIdentifierProcessedBefore('123', seenIdentifiers);
+      const result = service.wasIdentifierProcessedBefore(
+        '123',
+        seenIdentifiers,
+      );
       expect(result).toBe(false);
     });
   });
