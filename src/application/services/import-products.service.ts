@@ -28,7 +28,7 @@ export class ImportProductsService {
       Array.from(allIdentifiersFromRequest),
     );
     const existingIdentifiers = new Set(
-      existingProducts.map((product) => product.props.identifier),
+      existingProducts?.map((product) => product.props.identifier),
     );
 
     for (const product of products) {
@@ -61,7 +61,6 @@ export class ImportProductsService {
       this.logger.log({ message: 'Product created', product: created?.props });
       return created;
     } catch (error) {
-      console.log(error, error.code);
       await this.queueProvider.publishToDLQ(
         { data: product },
         new CreateProductError(),

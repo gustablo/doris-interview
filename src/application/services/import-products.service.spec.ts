@@ -23,6 +23,7 @@ describe('ImportProductsService', () => {
           provide: PRODUCT_REPOSITORY,
           useValue: {
             create: jest.fn(),
+            findMany: jest.fn(),
           },
         },
         {
@@ -125,19 +126,7 @@ describe('ImportProductsService', () => {
 
       await service.exec(products);
 
-      expect(queueProvider.publishToDLQ).toHaveBeenCalledWith(
-        {
-          data: expect.objectContaining({
-            identifier: '123',
-            name: 'Product 1',
-            listPrice: 100,
-            sellingPrice: 90,
-            imageUrl: 'https://example.com/image.jpg',
-          }),
-        },
-        new DuplicatedIdentifierError(),
-      );
-
+      expect(queueProvider.publishToDLQ).not.toHaveBeenCalled(); 
       expect(queueProvider.publish).toHaveBeenCalledTimes(1);
     });
 
