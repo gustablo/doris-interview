@@ -180,7 +180,7 @@ This is an example of how to list things you need to use the software and how to
 ## Usage
 
 ### Security
-To reach successfully the available endpoints you have to set your send the right api-key into the request headers. The api-key can be found in your .env file.
+To reach successfully the available endpoints you have to send the right api-key into the request headers. The api-key can be found in your .env file.
 
 ### API
 The API is running on localhost:3000. Check the docs section to see all available endpoints.
