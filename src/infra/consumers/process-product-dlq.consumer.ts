@@ -17,13 +17,18 @@ export class ProcessProductDLQConsumer extends WorkerHost {
   }
 
   async process(
-    job: Job<ProductProps & { reason: string }, any, string>,
+    job: Job<ProductProps & { reason: string, shouldSave: boolean }, any, string>,
   ): Promise<any> {
     this.logger.log({
       message: 'Processing DLQ job',
       job: job.id,
       data: job.data,
     });
+
+    if (!job.data.shouldSave) {
+      this.logger.log({ message: 'Product skipped from processing', product: job.data })
+      return;
+    }
 
     try {
       const updated = await this.productRepository.update(job.data.identifier, {

@@ -36,6 +36,7 @@ export class ImportProductsService {
         await this.queueProvider.publishToDLQ(
           { data: product.props },
           new DuplicatedIdentifierError(),
+          false
         );
       } else {
         const created = await this.createProduct({
@@ -55,9 +56,11 @@ export class ImportProductsService {
       this.logger.log({ message: 'Product created', product: created?.props });
       return created;
     } catch (error) {
+      console.log(error, error.code);
       await this.queueProvider.publishToDLQ(
         { data: product },
         new CreateProductError(),
+        error.code !== 'P2002' // verifying if product is duplicate by identifier, if so, dont save it. Not proud of it tbh, i would change it if i had more time
       );
       this.logger.error({ message: 'Error creating product', product, error });
     }

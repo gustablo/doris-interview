@@ -37,10 +37,11 @@ export class BullMQAdapter implements QueueProvider {
     }
   }
 
-  async publishToDLQ(props: PublishProps, reason: BaseError): Promise<void> {
+  async publishToDLQ(props: PublishProps, reason: BaseError, shouldSave: boolean = true): Promise<void> {
     try {
       await this.productProcessorDLQ.add(props.data.identifier, {
         reason: reason.message,
+        shouldSave,
         ...props.data,
       });
       this.logger.log({

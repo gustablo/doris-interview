@@ -7,5 +7,5 @@ export interface PublishProps {
 
 export interface QueueProvider {
   publish(data: PublishProps): Promise<void>;
-  publishToDLQ(data: PublishProps, reason: BaseError): Promise<void>;
+  publishToDLQ(data: PublishProps, reason: BaseError, shouldSave?: boolean): Promise<void>;
 }
